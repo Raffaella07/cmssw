@@ -10,6 +10,8 @@
 #include "FWCore/Utilities/interface/EDGetToken.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "RecoEgamma/EgammaTools/interface/EcalClusterLocal.h"
+#include "Geometry/Records/interface/CaloGeometryRecord.h"
+#include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 
 #include <vdt/vdtMath.h>
 
@@ -51,9 +53,8 @@ private:
   int nVtx_;
   edm::EDGetTokenT<reco::VertexCollection> vtxToken_;
   edm::Handle<reco::VertexCollection> vtxH_;
+  edm::ESHandle<CaloGeometry> caloGeomH_;
   const bool applyExtraHighEnergyProtection_;
-
-  const edm::EventSetup* iSetup_;
 
   std::vector<const GBRForestD*> phoForestsMean_;
   std::vector<const GBRForestD*> phoForestsSigma_;
@@ -112,7 +113,7 @@ void EGRegressionModifierV1::setEvent(const edm::Event& evt)
 
 void EGRegressionModifierV1::setEventContent(const edm::EventSetup& evs)
 {
-  iSetup_ = &evs;
+  evs.get<CaloGeometryRecord>().get(caloGeomH_);
 
   phoForestsMean_ = retrieveGBRForests(evs, (bunchspacing_ == 25) ? phoCondNames_.mean25ns  : phoCondNames_.mean50ns);
   phoForestsSigma_ = retrieveGBRForests(evs, (bunchspacing_ == 25) ? phoCondNames_.sigma25ns  : phoCondNames_.sigma50ns);
@@ -214,11 +215,10 @@ void EGRegressionModifierV1::modifyObject(reco::GsfElectron& ele) const {
   int iEta;
   float cryPhi;
   float cryEta;
-  EcalClusterLocal ecalLocal;
   if (ele.isEB())
-    ecalLocal.localCoordsEB(*theseed, *iSetup_, cryEta, cryPhi, iEta, iPhi, dummy, dummy);
+    egammaTools::localEcalClusterCoordsEB(*theseed, *caloGeomH_, cryEta, cryPhi, iEta, iPhi, dummy, dummy);
   else
-    ecalLocal.localCoordsEE(*theseed, *iSetup_, cryEta, cryPhi, iEta, iPhi, dummy, dummy);
+    egammaTools::localEcalClusterCoordsEE(*theseed, *caloGeomH_, cryEta, cryPhi, iEta, iPhi, dummy, dummy);
 
   if (isEB) {
     eval[29] = cryEta;

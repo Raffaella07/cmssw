@@ -54,6 +54,11 @@ from RecoTracker.SpecialSeedGenerators.cosmicDC_cff import *
 # Low pT electrons
 from RecoEgamma.EgammaElectronProducers.lowPtGsfElectronSequence_cff import *
 
+# Conversions from lowPtGsfTracks
+from RecoEgamma.EgammaPhotonProducers.conversionOpenTrackSequence_cff import *
+from RecoEgamma.EgammaPhotonProducers.gsfTracksOpenConversionSequence_cff import *
+
+
 localreco = cms.Sequence(bunchSpacingProducer+trackerlocalreco+muonlocalreco+calolocalreco+castorreco)
 localreco_HcalNZS = cms.Sequence(bunchSpacingProducer+trackerlocalreco+muonlocalreco+calolocalrecoNZS+castorreco)
 
@@ -85,7 +90,8 @@ ctpps_2016.toReplaceWith(localreco_HcalNZS, _ctpps_2016_localreco_HcalNZS)
 ###########################################
 _fastSim_localreco = localreco.copyAndExclude([
     castorreco,
-    totemRPLocalReconstruction,totemTimingLocalReconstruction,ctppsDiamondLocalReconstruction,ctppsLocalTrackLiteProducer,ctppsPixelLocalReconstruction,
+    totemRPLocalReconstruction,totemTimingLocalReconstruction,ctppsDiamondLocalReconstruction,
+      ctppsLocalTrackLiteProducer,ctppsPixelLocalReconstruction,ctppsProtons,
     trackerlocalreco
 ])
 fastSim.toReplaceWith(localreco, _fastSim_localreco)
@@ -157,7 +163,9 @@ highlevelreco = cms.Sequence(egammaHighLevelRecoPrePF*
                              PFTau*
                              reducedRecHits*
                              cosmicDCTracksSeq*
-                             lowPtGsfElectronSequence
+                             lowPtGsfElectronSequence*
+                             conversionOpenTrackSequence*
+                             gsfTracksOpenConversionSequence 
                              )
 
 # AA data with pp reco

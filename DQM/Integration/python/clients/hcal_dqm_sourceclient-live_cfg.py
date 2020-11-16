@@ -11,8 +11,8 @@ import os, sys, socket, string
 #	Standard CMSSW Imports/Definitions
 #-------------------------------------
 import FWCore.ParameterSet.Config as cms
-from Configuration.StandardSequences.Eras import eras
-process      = cms.Process('HCALDQM', eras.Run2_2018)
+from Configuration.Eras.Era_Run2_2018_cff import Run2_2018
+process      = cms.Process('HCALDQM', Run2_2018)
 subsystem    = 'Hcal'
 cmssw        = os.getenv("CMSSW_VERSION").split("_")
 debugstr     = "### HcalDQM::cfg::DEBUG: "
@@ -28,7 +28,7 @@ useMap       = False
 from DQM.Integration.config.online_customizations_cfi import *
 if useOfflineGT:
 	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
-	process.GlobalTag.globaltag = '100X_dataRun2_HLT_v1'
+	process.GlobalTag.globaltag = '106X_dataRun2_PromptLike_Candidate_2019_05_04_08_47_47'
 	#process.GlobalTag.globaltag = '100X_dataRun2_HLT_Candidate_2018_01_31_16_04_35'
 else:
 	process.load('DQM.Integration.config.FrontierCondition_GT_cfi')

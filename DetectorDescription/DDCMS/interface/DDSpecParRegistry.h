@@ -12,17 +12,21 @@ namespace cms {
   using DDVectorsMap = tbb::concurrent_unordered_map< std::string, tbb::concurrent_vector<double>>;
   
   struct DDSpecPar {
+    std::string_view strValue(const char*) const;
+    bool hasValue(const char* key) const;
+    double dblValue(const char*) const;
+    
     DDPaths paths;
     DDPartSelectionMap spars;
     DDVectorsMap numpars;
   };
   
   using DDSpecParMap = tbb::concurrent_unordered_map<std::string, DDSpecPar>;
-  using DDSpecParRefMap = tbb::concurrent_unordered_map<const std::string*, const DDSpecPar*>;
+  using DDSpecParRefs = std::vector<const DDSpecPar*>;
 
   struct DDSpecParRegistry {
-    void filter(DDSpecParRefMap&, std::string_view, std::string_view) const;
-    
+    void filter(DDSpecParRefs&, std::string_view, std::string_view) const;
+
     DDSpecParMap specpars;
   };
 }
