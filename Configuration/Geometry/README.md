@@ -78,6 +78,9 @@ Tracker:
 * T33: Phase2 tilted tracker. Identical to T32 apart from a more realistic description of the 3D sensors in TBPX layer1.
 * T34: Same as T32 with the exception of modified Tracker volume so that it touches CALO on the outer side and BeamPipe on the inner side
 * T35: Same as T33 with the exception of modified Tracker volume so that it touches CALO on the outer side and BeamPipe on the inner side
+* T36: Same as T35 + OT: TB2S - increased (smallDelta +300 micron) inter-ladder radial spacing. IT: TFPX modules rotated slightly around their z axis, re-ordering of module placement on the different dees.
+* T37: Same as T36 + IT: 1.8 mm gap between Z+ and Z-
+* T38: Same as T36 + IT: 3.0 mm gap between Z+ and Z- 
 
 Calorimeters:
 * C9: HGCal (v11 post TDR HGCal Geometry w/ corner centering for HE part) + Phase2 HCAL and EB + Tracker cables (used in 2026D49)
@@ -153,3 +156,6 @@ Several detector combinations have been generated:
 * D107 = T32+C17+M11+I17+O9+F8
 * D108 = T35+C19+M11+I17+O9+F8
 * D109 = T35+C24+M11+I17+O9+F8
+* D110 = T36+C24+M11+I17+O9+F8
+* D111 = T37+C24+M11+I17+O9+F8
+* D112 = T38+C24+M11+I17+O9+F8
