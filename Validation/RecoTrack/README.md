@@ -1,5 +1,17 @@
 Customization for Phase2 Geometry
 =================================
+Installation recipe (to be tested):
+```
+cmsrel CMSSW_14_1_1 (latest geometries are available from this release on)
+cd CMSSW_14_1_1/src
+cmsenv
+git cms-init 
+git remote add TrkDev git@github.com:Raffaella07/cmssw.git
+git checkout TrackNtuples  
+```
+To develop on top of this code, please switch remote to your own fork. 
+
+Info and config:
 
 Everything reported below is valid for Phase2 geometry testing. The era and configurations for CMSSW_14X RelVals produced with the new phase 2 geometry simulations are already implemented in test/MultiTrackValidator_phase2_cfg.py. 
 
