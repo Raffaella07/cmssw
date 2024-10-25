@@ -22,8 +22,8 @@ def customiseTrackingNtupleTool(process, isRECO = True, mergeIters = False):
                 raise Exception("TrackingNtuple includeSeeds=True needs HLTIterativeTrackingIter02 which is missing")
 
     # Replace validation_step with ntuplePath
-    if not hasattr(process, "validation_step"):
-        raise Exception("TrackingNtuple customise assumes process.validation_step exists")
+#    if not hasattr(process, "validation"):
+#        raise Exception("TrackingNtuple customise assumes process.validation_step exists")
 
 
     # Should replay mixing for pileup simhits?
@@ -73,8 +73,8 @@ def customiseTrackingNtupleTool(process, isRECO = True, mergeIters = False):
     # Bit of a hack but works
     modifier = cms.Modifier()
     modifier._setChosen()
-    modifier.toReplaceWith(process.prevalidation_step, ntuplePath)
-    modifier.toReplaceWith(process.validation_step, cms.EndPath())
+ #   modifier.toReplaceWith(process.prevalidation_step, ntuplePath)
+ #   modifier.toReplaceWith(process.validation_step, cms.EndPath())
 
     # remove the validation_stepN and prevalidatin_stepN of phase2 validation...    
     for p in [process.paths_(), process.endpaths_()]:    
@@ -83,7 +83,7 @@ def customiseTrackingNtupleTool(process, isRECO = True, mergeIters = False):
                 if len(pathName.replace("prevalidation_step", "")) > 0:    
                     modifier.toReplaceWith(path, cms.Path())    
             elif "validation_step" in pathName:    
-                if len(pathName.replace("validation_step", "")) > 0:    
+                if len(pathName.replace("validation", "")) > 0:    
                     modifier.toReplaceWith(path, cms.EndPath())
 
     # Remove all output modules

@@ -14,14 +14,14 @@ from Validation.RecoTrack.TrackValidation_cff import *
 from SimGeneral.TrackingAnalysis.trackingParticleNumberOfLayersProducer_cff import *
 import Validation.RecoTrack.TrackValidation_cff as _TrackValidation_cff
 
-_includeHits = True
-#_includeHits = False
+#_includeHits = True
+_includeHits = False
 
-_includeSeeds = True
-#_includeSeeds = False
+#_includeSeeds = True
+_includeSeeds = False
 
-_includeMVA = True
-#_includeMVA = False
+#_includeMVA = True
+_includeMVA = False
 
 _includeTrackingParticles = True
 #_includeTrackingParticles = False

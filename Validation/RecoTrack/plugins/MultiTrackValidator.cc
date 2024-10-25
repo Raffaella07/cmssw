@@ -151,13 +151,13 @@ MultiTrackValidator::MultiTrackValidator(const edm::ParameterSet& pset)
     for (size_t iIter = 0; iIter < labelToken.size(); ++iIter) {
       edm::EDConsumerBase::Labels labels;
       labelsForToken(labelToken[iIter], labels);
-      if (mvaPSet.exists(labels.module)) {
+ /*     if (mvaPSet.exists(labels.module)) {
         mvaQualityCollectionTokens_[iIter] = edm::vector_transform(
             mvaPSet.getUntrackedParameter<std::vector<std::string>>(labels.module), [&](const std::string& tag) {
               return std::make_tuple(consumes<MVACollection>(edm::InputTag(tag, "MVAValues")),
                                      consumes<QualityMaskCollection>(edm::InputTag(tag, "QualityMasks")));
             });
-      }
+      }*/
     }
   }
 
@@ -765,7 +765,7 @@ void MultiTrackValidator::dqmAnalyze(const edm::Event& event,
   }
 
   std::vector<const MVACollection*> mvaCollections;
-  std::vector<const QualityMaskCollection*> qualityMaskCollections;
+  //std::vector<const QualityMaskCollection*> qualityMaskCollections;
   std::vector<float> mvaValues;
 
   int w = 0;  //counter counting the number of sets of histograms
@@ -845,26 +845,26 @@ void MultiTrackValidator::dqmAnalyze(const edm::Event& event,
       // read MVA collections
       if (doMVAPlots_ && !mvaQualityCollectionTokens_[www].empty()) {
         edm::Handle<MVACollection> hmva;
-        edm::Handle<QualityMaskCollection> hqual;
+      //  edm::Handle<QualityMaskCollection> hqual;
         for (const auto& tokenTpl : mvaQualityCollectionTokens_[www]) {
           event.getByToken(std::get<0>(tokenTpl), hmva);
-          event.getByToken(std::get<1>(tokenTpl), hqual);
+      //    event.getByToken(std::get<1>(tokenTpl), hqual);
 
           mvaCollections.push_back(hmva.product());
-          qualityMaskCollections.push_back(hqual.product());
+        //  qualityMaskCollections.push_back(hqual.product());
           if (mvaCollections.back()->size() != trackCollection.size()) {
             throw cms::Exception("Configuration")
                 << "Inconsistency in track collection and MVA sizes. Track collection " << www << " has "
                 << trackCollection.size() << " tracks, whereas the MVA " << (mvaCollections.size() - 1)
                 << " for it has " << mvaCollections.back()->size() << " entries. Double-check your configuration.";
           }
-          if (qualityMaskCollections.back()->size() != trackCollection.size()) {
+ /*         if (qualityMaskCollections.back()->size() != trackCollection.size()) {
             throw cms::Exception("Configuration")
                 << "Inconsistency in track collection and quality mask sizes. Track collection " << www << " has "
                 << trackCollection.size() << " tracks, whereas the quality mask " << (qualityMaskCollections.size() - 1)
                 << " for it has " << qualityMaskCollections.back()->size()
                 << " entries. Double-check your configuration.";
-          }
+          }*/
         }
       }
 
@@ -956,7 +956,7 @@ void MultiTrackValidator::dqmAnalyze(const edm::Event& event,
               // for loose and highPurity qualities
               for (size_t imva = 0; imva < mvaCollections.size(); ++imva) {
                 const auto& mva = *(mvaCollections[imva]);
-                const auto& qual = *(qualityMaskCollections[imva]);
+          //      const auto& qual = *(qualityMaskCollections[imva]);
 
                 auto iMatch = rt.begin();
                 float maxMva = mva[iMatch->first.key()];
@@ -964,10 +964,10 @@ void MultiTrackValidator::dqmAnalyze(const edm::Event& event,
                   auto itrk = iMatch->first.key();
                   maxMva = std::max(maxMva, mva[itrk]);
 
-                  if (selectsLoose >= imva && trackSelected(qual[itrk], reco::TrackBase::loose))
-                    selectsLoose = imva;
-                  if (selectsHP >= imva && trackSelected(qual[itrk], reco::TrackBase::highPurity))
-                    selectsHP = imva;
+              //    if (selectsLoose >= imva && trackSelected(qual[itrk], reco::TrackBase::loose))
+              //      selectsLoose = imva;
+              //    if (selectsHP >= imva && trackSelected(qual[itrk], reco::TrackBase::highPurity))
+             //       selectsHP = imva;
                 }
                 mvaValues.push_back(maxMva);
               }
@@ -1101,13 +1101,13 @@ void MultiTrackValidator::dqmAnalyze(const edm::Event& event,
         if (doMVAPlots_) {
           for (size_t imva = 0; imva < mvaCollections.size(); ++imva) {
             const auto& mva = *(mvaCollections[imva]);
-            const auto& qual = *(qualityMaskCollections[imva]);
+        //    const auto& qual = *(qualityMaskCollections[imva]);
             mvaValues.push_back(mva[i]);
 
-            if (selectsLoose >= imva && trackSelected(qual[i], reco::TrackBase::loose))
+         /*   if (selectsLoose >= imva && trackSelected(qual[i], reco::TrackBase::loose))
               selectsLoose = imva;
             if (selectsHP >= imva && trackSelected(qual[i], reco::TrackBase::highPurity))
-              selectsHP = imva;
+              selectsHP = imva;*/
           }
         }
 
@@ -1188,7 +1188,7 @@ void MultiTrackValidator::dqmAnalyze(const edm::Event& event,
 
       }  // End of for(View<Track>::size_type i=0; i<trackCollection.size(); ++i){
       mvaCollections.clear();
-      qualityMaskCollections.clear();
+ //     qualityMaskCollections.clear();
 
       histoProducerAlgo_->fill_trackBased_histos(histograms.histoProducerAlgo, w, at, rT, n_selTrack_dr, n_selTP_dr);
       // Fill seed-specific histograms
