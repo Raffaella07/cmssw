@@ -1,3 +1,15 @@
+Customization for Phase2 Geometry
+=================================
+
+Everything reported below is valid for Phase2 geometry testing. The era and configurations for CMSSW_14X RelVals produced with the new phase 2 geometry simulations are already implemented in test/MultiTrackValidator_phase2_cfg.py. 
+
+N.B. for RelVals generated with different geometries, one has to force the correct geometry in the test/MultiTrackValidator_phase2_cfg.py file, as otherwise the configuration will try to extract a geometry from the DB, and hence encounter alignement vs geometry mismatches. To force the geometry, one needs to modify the line:
+
+process.load('Configuration.Geometry.GeometryExtended2026D112Reco_cff')
+with the specific geometry version (D110, D111, D112 etc. )
+
+
+
 Tracking validation
 ===================
 
